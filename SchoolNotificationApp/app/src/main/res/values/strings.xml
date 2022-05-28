@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Школьные уведомления</string>
+
+    <string name="tv_host">Адрес хоста:</string>
+    <string name="tv_username">Имя пользователя:</string>
+    <string name="tv_password">Пароль:</string>
+    <string name="et_password">Пароль пользователя</string>
+    <string name="btn_login">Войти</string>
 </resources>
