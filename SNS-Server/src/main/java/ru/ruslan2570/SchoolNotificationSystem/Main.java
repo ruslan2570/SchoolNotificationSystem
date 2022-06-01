@@ -10,11 +10,13 @@ import java.net.InetSocketAddress;
 public class Main {
     public static void main(String[] args) {
 
+
+
         try {
 
             ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
             contextHandler.addServlet(new ServletHolder(new IndexServlet()), "/index.html");
-            contextHandler.addServlet(new ServletHolder(new MainServlet()), "/request");
+            contextHandler.addServlet(new ServletHolder(new MainServlet(args[0], args[1], args[2])), "/request");
 
             Server server = new Server(4242);
             server.setHandler(contextHandler);
