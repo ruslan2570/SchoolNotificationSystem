@@ -1,4 +1,4 @@
-package ru.ruslan2570.SchoolNotificationSystem;
+package ru.ruslan2570.SchoolNotificationSystem.models;
 
 import java.util.LinkedList;
 import java.util.List;

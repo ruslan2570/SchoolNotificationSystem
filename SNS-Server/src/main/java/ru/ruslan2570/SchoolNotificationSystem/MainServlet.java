@@ -6,9 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
+import ru.ruslan2570.SchoolNotificationSystem.models.Message;
+import ru.ruslan2570.SchoolNotificationSystem.models.MessageList;
+import ru.ruslan2570.SchoolNotificationSystem.models.User;
+import ru.ruslan2570.SchoolNotificationSystem.models.UserList;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class MainServlet extends HttpServlet {
 
@@ -62,17 +65,23 @@ public class MainServlet extends HttpServlet {
 
             else {
                 response.setContentType("application/json;charset=utf-8");
+                Statement statement;
+                ResultSet set;
+                Gson json;
 
                 switch (act) {
                     case "getUsers":
-                        Statement statement = connection.createStatement();
-                        ResultSet set = statement.executeQuery("SELECT user_id, username, role.role_name FROM `user` INNER JOIN `role` ON role.role_id = user.role");
+                        statement = connection.createStatement();
+                        set = statement.executeQuery("SELECT user_id, username, role.role_name FROM `user` INNER JOIN `role` ON role.role_id = user.role");
 
-                        Gson json = new GsonBuilder().setPrettyPrinting().create();
+                        json = new GsonBuilder().setPrettyPrinting().create();
                         UserList users = new UserList();
 
                         while (set.next()) {
-                            User user = new User(set.getInt("user_id"), set.getString("username"), set.getString("role_name"));
+                            User user = new User(
+                                    set.getInt("user_id"),
+                                    set.getString("username"),
+                                    set.getString("role_name"));
                             users.addUser(user);
                         }
 
@@ -81,8 +90,38 @@ public class MainServlet extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_OK);
                         break;
 
+                    case "getMessages":
+                        statement = connection.createStatement();
+                        set = statement.executeQuery("SELECT message.message_id as msg_id, message.text as `text`, " +
+                                "user.username as username, " +
+                                "role.role_name as role" +
+                                " FROM `message`, `user`, `role` " +
+                                "WHERE message.user_id = user.user_id " +
+                                "AND user.role = role.role_id");
+
+
+                        json = new GsonBuilder().setPrettyPrinting().create();
+                        MessageList messages = new MessageList();
+
+                        while (set.next()) {
+                            Message msg = new Message(
+                                    set.getInt("msg_id"),
+                                    set.getString("text"),
+                                    set.getString("username"),
+                                    set.getString("role"));
+                            messages.addMessage(msg);
+                        }
+
+                        response.getWriter().println(json.toJson(messages));
+
+                        response.setStatus(HttpServletResponse.SC_OK);
+
+
+
+                        break;
+
                     case "login":
-                        System.out.println("login");
+
                         break;
                 }
             }
