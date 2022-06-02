@@ -62,6 +62,7 @@ public class MainServlet extends HttpServlet {
 
             else {
                 response.setContentType("application/json;charset=utf-8");
+
                 switch (act) {
                     case "getUsers":
                         Statement statement = connection.createStatement();
@@ -78,6 +79,10 @@ public class MainServlet extends HttpServlet {
                         response.getWriter().println(json.toJson(users));
 
                         response.setStatus(HttpServletResponse.SC_OK);
+                        break;
+
+                    case "login":
+                        System.out.println("login");
                         break;
                 }
             }
