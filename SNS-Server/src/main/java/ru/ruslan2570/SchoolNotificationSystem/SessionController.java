@@ -12,7 +12,7 @@ public class SessionController {
 
     private static SessionController sessionController;
 
-    private Map<String, Session> sessionMap = new HashMap<>();
+    private final Map<String, Session> sessionMap = new HashMap<>();
 
     private SessionController(){}
 
@@ -27,7 +27,32 @@ public class SessionController {
             String key = entry.getKey();
             Session session = entry.getValue();
             if(user.userId == session.user.userId){
+                session.remainingTime+= 5;
                 return key;
+            }
+        }
+        return null;
+    }
+
+    public Session getSession(User user){
+        for(Map.Entry<String, Session> entry: sessionMap.entrySet()){
+            String key = entry.getKey();
+            Session session = entry.getValue();
+            if(user.userId == session.user.userId){
+                session.remainingTime+= 5;
+                return session;
+            }
+        }
+        return null;
+    }
+
+    public Session getSession(String sessionId){
+        for(Map.Entry<String, Session> entry: sessionMap.entrySet()){
+            String key = entry.getKey();
+            Session session = entry.getValue();
+            if(session.id.equals(sessionId)){
+                session.remainingTime+= 5;
+                return session;
             }
         }
         return null;

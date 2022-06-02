@@ -8,6 +8,11 @@ public class User {
         this.roleName = roleName;
     }
 
+    @Override
+    public String toString(){
+        return "Id: " + userId + " Name: " + username + " role: " + roleName;
+    }
+
     public int userId;
     public String username;
     public String roleName;
