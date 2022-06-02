@@ -1,17 +1,21 @@
 package ru.ruslan2570.SchoolNotificationSystem;
 
-
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
 import ru.ruslan2570.SchoolNotificationSystem.models.Message;
 import ru.ruslan2570.SchoolNotificationSystem.models.MessageList;
 import ru.ruslan2570.SchoolNotificationSystem.models.User;
 import ru.ruslan2570.SchoolNotificationSystem.models.UserList;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class MainServlet extends HttpServlet {
 
@@ -121,6 +125,26 @@ public class MainServlet extends HttpServlet {
                         break;
 
                     case "login":
+                        String login = request.getParameter("login");
+                        String password = request.getParameter("password");
+
+                        if(login == null || password == null){
+                            json = new GsonBuilder().setPrettyPrinting().create();
+
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Login or password is empty.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            break;
+                        }
+
+                        statement = connection.createStatement();
+                        set = statement.executeQuery("SELECT * FROM `user` WHERE user.username LIKE '" + login + "'");
+
+                        System.out.println(set.isLast());
+                        while(set.next()){
+                            System.out.println(set.getString("username"));
+                        }
 
                         break;
                 }
