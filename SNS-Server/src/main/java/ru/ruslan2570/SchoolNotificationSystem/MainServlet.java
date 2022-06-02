@@ -65,12 +65,16 @@ public class MainServlet extends HttpServlet {
 
             else {
                 response.setContentType("application/json;charset=utf-8");
+                String sessionId = request.getParameter("session_id");
                 Statement statement;
                 ResultSet resultSet;
                 Gson json;
 
                 switch (act) {
                     case "getUsers":
+
+
+
                         statement = connection.createStatement();
                         resultSet = statement.executeQuery("SELECT user_id, username, role.role_name FROM `user` INNER JOIN `role` ON role.role_id = user.role");
 
@@ -99,7 +103,6 @@ public class MainServlet extends HttpServlet {
                                 "WHERE message.user_id = user.user_id " +
                                 "AND user.role = role.role_id");
 
-
                         json = new GsonBuilder().setPrettyPrinting().create();
                         MessageList messages = new MessageList();
 
@@ -113,10 +116,7 @@ public class MainServlet extends HttpServlet {
                         }
 
                         response.getWriter().println(json.toJson(messages));
-
                         response.setStatus(HttpServletResponse.SC_OK);
-
-
 
                         break;
 
@@ -125,7 +125,6 @@ public class MainServlet extends HttpServlet {
                         String password = request.getParameter("password");
                         json = new GsonBuilder().setPrettyPrinting().create();
                         if(login == null || password == null){
-
                             JsonObject jsonObj = new JsonObject();
                             jsonObj.addProperty("error", "Login or password is empty.");
                             response.getWriter().println(json.toJson(jsonObj));
@@ -135,13 +134,11 @@ public class MainServlet extends HttpServlet {
 
                         statement = connection.createStatement();
                         Statement statement2 = connection.createStatement();
-                        System.out.println(login);
                         ResultSet countSet = statement.executeQuery("SELECT Count(*) as count FROM `user` WHERE user.username LIKE '" + login + "'");
                         countSet.next();
                         resultSet = statement2.executeQuery("SELECT user_id, username, role.role_name, hash FROM `user` " +
                                 "INNER JOIN `role` ON role.role_id = user.role  WHERE user.username LIKE '" + login + "'");
 
-                        System.out.println(countSet.getInt("count"));
                         if(countSet.getInt("count") == 0){
                             JsonObject jsonObj = new JsonObject();
                             jsonObj.addProperty("error", "Login is not found.");
@@ -169,13 +166,12 @@ public class MainServlet extends HttpServlet {
                             session = SessionController.getInstance().getSession(user);
                         }
 
-
                         response.getWriter().println(json.toJson(session));
 
                         break;
                 }
             }
-    } catch( Exception x)
+    } catch(Exception x)
     {
         x.printStackTrace();
     }

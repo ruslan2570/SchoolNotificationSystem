@@ -81,12 +81,13 @@ public class SessionController {
     public void addSession(User user){
         if(getSessionId(user) == null){
             String id = generateId();
+            System.out.println(id);
             Session session = new Session(id, user, 10);
             sessionMap.put(id, session);
         }
     }
 
     private static String generateId(){
-        return HashUtils.getHash(sessionController.toString() + new Random().nextInt());
+        return HashUtils.getHash(sessionController.sessionMap.toString() + new Random().nextInt());
     }
 }

@@ -10,8 +10,6 @@ import java.net.InetSocketAddress;
 public class Main {
     public static void main(String[] args) {
 
-
-
         try {
 
             ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -21,8 +19,21 @@ public class Main {
             Server server = new Server(4242);
             server.setHandler(contextHandler);
 
+            new Thread(() -> {
+                try {
+                    while(true) {
+                        SessionController.getInstance().deleteExpiredSessions();
+                        SessionController.getInstance().subOneMinute();
+                        Thread.sleep(60000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
             server.start();
             server.join();
+
         } catch (Exception e){
             e.printStackTrace();
         }
