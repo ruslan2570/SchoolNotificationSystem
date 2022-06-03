@@ -106,6 +106,17 @@ public class MainServlet extends HttpServlet {
                         break;
 
                     case "getMessages":
+
+                        json = new GsonBuilder().setPrettyPrinting().create();
+
+                        if (sessionId == null || SessionController.getInstance().getSession(sessionId) == null) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Bad session.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
+
                         statement = connection.createStatement();
                         resultSet = statement.executeQuery("SELECT message.message_id as msg_id, message.text as `text`, " +
                                 "user.username as username, " +
@@ -114,7 +125,6 @@ public class MainServlet extends HttpServlet {
                                 "WHERE message.user_id = user.user_id " +
                                 "AND user.role = role.role_id");
 
-                        json = new GsonBuilder().setPrettyPrinting().create();
                         MessageList messages = new MessageList();
 
                         while (resultSet.next()) {
@@ -128,6 +138,72 @@ public class MainServlet extends HttpServlet {
 
                         response.getWriter().println(json.toJson(messages));
                         response.setStatus(HttpServletResponse.SC_OK);
+
+                        break;
+
+                    case "getRoles":
+
+                        json = new GsonBuilder().setPrettyPrinting().create();
+
+                        if (sessionId == null || SessionController.getInstance().getSession(sessionId) == null) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Bad session.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
+
+                        if (!SessionController.getInstance().getSession(sessionId).user.roleName.equals("Администратор")) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Access denied.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
+
+                        statement = connection.createStatement();
+                        resultSet = statement.executeQuery("SELECT * FROM `role`");
+
+                        RoleList roles = new RoleList();
+
+                        while (resultSet.next()) {
+                            Role role = new Role(
+                                    resultSet.getInt("role_id"),
+                                    resultSet.getString("role_name"));
+                            roles.addRole(role);
+                        }
+
+                        response.getWriter().println(json.toJson(roles));
+                        response.setStatus(HttpServletResponse.SC_OK);
+
+                        break;
+
+                    case "addMessage":
+
+
+                        if (sessionId == null || SessionController.getInstance().getSession(sessionId) == null) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Bad session.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
+
+                        if (!SessionController.getInstance().getSession(sessionId).user.roleName.equals("Администратор")) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Access denied.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
+
+                        break;
+
+                    case "addUser":
+
+                        break;
+
+                    case "delUser":
 
                         break;
 

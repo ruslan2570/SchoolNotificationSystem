@@ -1,16 +1,16 @@
 package ru.ruslan2570.SchoolNotificationSystem.models;
 
 import java.util.List;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class MessageList {
-    List<Message> messages = new LinkedList<Message>();
+    List<Message> messages = new ArrayList<Message>();
 
     public void addMessage(Message msg){
         messages.add(msg);
     }
 
     public List<Message> getMessages(){
-        return new LinkedList<>(messages);
+        return new ArrayList<>(messages);
     }
 }

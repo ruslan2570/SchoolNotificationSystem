@@ -81,7 +81,6 @@ public class SessionController {
     public void addSession(User user){
         if(getSessionId(user) == null){
             String id = generateId();
-            System.out.println(id);
             Session session = new Session(id, user, 10);
             sessionMap.put(id, session);
         }
