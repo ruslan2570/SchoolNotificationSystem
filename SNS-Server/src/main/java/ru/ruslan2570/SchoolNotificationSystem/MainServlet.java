@@ -25,7 +25,6 @@ public class MainServlet extends HttpServlet {
         this.password = password;
     }
 
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         String act = request.getParameter("action");
@@ -61,9 +60,7 @@ public class MainServlet extends HttpServlet {
                 }
                 response.getWriter().println("</table></body></html>");
                 response.setStatus(HttpServletResponse.SC_OK);
-            }
-
-            else {
+            } else {
                 response.setContentType("application/json;charset=utf-8");
                 String sessionId = request.getParameter("session_id");
                 Statement statement;
@@ -72,13 +69,27 @@ public class MainServlet extends HttpServlet {
 
                 switch (act) {
                     case "getUsers":
+                        json = new GsonBuilder().setPrettyPrinting().create();
 
+                        if (sessionId == null || SessionController.getInstance().getSession(sessionId) == null) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Bad session.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
 
+                        if (!SessionController.getInstance().getSession(sessionId).user.roleName.equals("Администратор")) {
+                            JsonObject jsonObj = new JsonObject();
+                            jsonObj.addProperty("error", "Access denied.");
+                            response.getWriter().println(json.toJson(jsonObj));
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            break;
+                        }
 
                         statement = connection.createStatement();
                         resultSet = statement.executeQuery("SELECT user_id, username, role.role_name FROM `user` INNER JOIN `role` ON role.role_id = user.role");
 
-                        json = new GsonBuilder().setPrettyPrinting().create();
                         UserList users = new UserList();
 
                         while (resultSet.next()) {
@@ -124,7 +135,7 @@ public class MainServlet extends HttpServlet {
                         String login = request.getParameter("login");
                         String password = request.getParameter("password");
                         json = new GsonBuilder().setPrettyPrinting().create();
-                        if(login == null || password == null){
+                        if (login == null || password == null) {
                             JsonObject jsonObj = new JsonObject();
                             jsonObj.addProperty("error", "Login or password is empty.");
                             response.getWriter().println(json.toJson(jsonObj));
@@ -139,7 +150,7 @@ public class MainServlet extends HttpServlet {
                         resultSet = statement2.executeQuery("SELECT user_id, username, role.role_name, hash FROM `user` " +
                                 "INNER JOIN `role` ON role.role_id = user.role  WHERE user.username LIKE '" + login + "'");
 
-                        if(countSet.getInt("count") == 0){
+                        if (countSet.getInt("count") == 0) {
                             JsonObject jsonObj = new JsonObject();
                             jsonObj.addProperty("error", "Login is not found.");
                             response.getWriter().println(json.toJson(jsonObj));
@@ -153,7 +164,7 @@ public class MainServlet extends HttpServlet {
                                 resultSet.getString("username"),
                                 resultSet.getString("role_name"));
 
-                        if(!HashUtils.isValid(password, resultSet.getString("hash"))){
+                        if (!HashUtils.isValid(password, resultSet.getString("hash"))) {
                             JsonObject jsonObj = new JsonObject();
                             jsonObj.addProperty("error", "Password is not valid.");
                             response.getWriter().println(json.toJson(jsonObj));
@@ -161,7 +172,7 @@ public class MainServlet extends HttpServlet {
                             break;
                         }
                         Session session = SessionController.getInstance().getSession(user);
-                        if(session == null){
+                        if (session == null) {
                             SessionController.getInstance().addSession(user);
                             session = SessionController.getInstance().getSession(user);
                         }
@@ -171,11 +182,10 @@ public class MainServlet extends HttpServlet {
                         break;
                 }
             }
-    } catch(Exception x)
-    {
-        x.printStackTrace();
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
     }
-}
 }
 
 
