@@ -317,7 +317,7 @@ public class MainServlet extends HttpServlet {
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("error", error);
         response.getWriter().println(json.toJson(jsonObj));
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }
 
