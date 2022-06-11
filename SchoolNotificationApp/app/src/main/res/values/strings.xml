@@ -6,4 +6,6 @@
     <string name="tv_password">Пароль:</string>
     <string name="et_password">Пароль пользователя</string>
     <string name="btn_login">Войти</string>
+    <string name="itm_update">Обновить</string>
+    <string name="itm_logout">Выйти</string>
 </resources>

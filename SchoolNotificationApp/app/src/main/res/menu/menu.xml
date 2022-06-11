@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/itm_update"
-        android:title="Обновить"
+        android:title="@string/itm_update"
         />
 
     <item
         android:id="@+id/itm_logout"
-        android:title="Выход"
+        android:title="@string/itm_logout"
         />
 
 </menu>
