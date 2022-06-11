@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -67,6 +69,7 @@ public class ListActivity extends AppCompatActivity {
 		String error = null;
 		ErrorDialog errorDialog;
 		FragmentManager manager = getSupportFragmentManager();
+		ArrayList<JSONObject> messageArray = new ArrayList<>();
 		public void run(){
 			try {
 				URL url = new URL("http://" + host + "/request?action=getMessages&session_id=" + token);
@@ -91,7 +94,16 @@ public class ListActivity extends AppCompatActivity {
 					errorDialog.show(manager, "errorDialog");
 				}
 
+				for(int i = 0; i < messages.length(); i++){
+					messageArray.add(messages.getJSONObject(i));
+				}
 
+				MessageAdapter adapter = new MessageAdapter(getApplicationContext(),
+						R.layout.row, R.id.listview, messageArray);
+
+				handler.post(() -> {
+					listView.setAdapter(adapter);
+				});
 
 
 			} catch (IOException | JSONException e) {

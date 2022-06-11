@@ -25,6 +25,7 @@ public class MessageAdapter extends ArrayAdapter<JSONObject> {
 		this.context = context;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View itemView = inflater.inflate(listLayout, parent, false);
