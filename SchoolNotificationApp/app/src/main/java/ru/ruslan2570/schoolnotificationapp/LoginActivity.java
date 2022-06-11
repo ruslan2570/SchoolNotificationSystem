@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		public void run() {
 			HttpURLConnection connection = null;
-			String id = null;
+			String sessionId = null;
 			String error = null;
 			try {
 				URL url = new URL("http://" + edHost.getText() + "/request?action=login&login="
@@ -80,20 +80,20 @@ public class LoginActivity extends AppCompatActivity {
 				connection = (HttpURLConnection) url.openConnection();
 				Log.d(TAG, "run: " + connection.getResponseCode());
 				InputStream input = connection.getInputStream();
-				byte[] buff = readAllBytes(input);
+				byte[] buff = Utils.readAllBytes(input);
 
 				String result = new String(buff);
 
 				JSONObject json = new JSONObject(result);
 				try {
-					id = json.getString("id");
+					sessionId = json.getString("id");
 				} catch (JSONException e) {
 					error = json.getString("error");
 				}
 
-				if (id != null) {
+				if (sessionId != null) {
 					Intent intent = new Intent(LoginActivity.this, ListActivity.class);
-					intent.putExtra("id", id);
+					intent.putExtra("session_id", sessionId);
 					startActivity(intent);
 				} else {
 					errorDialog = new ErrorDialog(error);
@@ -112,30 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 		}
 	}
 
-	public static byte[] readAllBytes(InputStream inputStream) throws IOException {
-		final int bufLen = 1024;
-		byte[] buf = new byte[bufLen];
-		int readLen;
-		IOException exception = null;
 
-		try {
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-			while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
-				outputStream.write(buf, 0, readLen);
-			return outputStream.toByteArray();
-		} catch (IOException e) {
-			exception = e;
-			throw e;
-		} finally {
-			if (exception == null) inputStream.close();
-			else try {
-				inputStream.close();
-			} catch (IOException e) {
-				exception.addSuppressed(e);
-			}
-		}
-	}
 }
 
 
