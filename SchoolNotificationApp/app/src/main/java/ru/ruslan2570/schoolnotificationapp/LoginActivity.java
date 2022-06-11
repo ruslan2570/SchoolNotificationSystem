@@ -1,13 +1,12 @@
 package ru.ruslan2570.schoolnotificationapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.ColorSpace;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.Button;
-import android.widget.Toast;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 	static final String APP_PREFERENCES_HOST = "host";
 	static final String APP_PREFERENCES_USERNAME = "username";
 	static final String APP_PREFERENCES_PASSWORD = "password";
-	static final String APP_PREFERENCES_SID = ""
 
 	static final String TAG = "LoginActivity";
 
@@ -37,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 	Handler handler;
 
 	FragmentManager manager;
+	ErrorDialog errorDialog;
 
 	EditText edHost;
 	EditText edUsername;
@@ -65,15 +64,13 @@ public class LoginActivity extends AppCompatActivity {
 			editor.putString(APP_PREFERENCES_USERNAME, edUsername.getText().toString());
 			editor.putString(APP_PREFERENCES_PASSWORD, edPassword.getText().toString());
 			editor.commit();
-			btnLogin.setClickable(false);
-			new Thread(new LoginUpdateRunnable()).start();
+			new Thread(new LoginRunnable()).start();
 		});
 	}
 
-	public class LoginUpdateRunnable implements Runnable {
+	public class LoginRunnable implements Runnable {
 
 		public void run() {
-
 			HttpURLConnection connection = null;
 			String id = null;
 			String error = null;
@@ -94,15 +91,23 @@ public class LoginActivity extends AppCompatActivity {
 					error = json.getString("error");
 				}
 
-
+				if (id != null) {
+					Intent intent = new Intent(LoginActivity.this, ListActivity.class);
+					intent.putExtra("id", id);
+					startActivity(intent);
+				} else {
+					errorDialog = new ErrorDialog(error);
+					errorDialog.show(manager, "errorDialog");
+				}
 
 				Log.d(TAG, "run: " + result);
 			} catch (IOException | JSONException e) {
 				e.printStackTrace();
+				errorDialog = new ErrorDialog(e.toString());
+				errorDialog.show(manager, "errorDialog");
 			} finally {
 				if (connection != null)
 					connection.disconnect();
-				btnLogin.setClickable(true);
 			}
 		}
 	}
