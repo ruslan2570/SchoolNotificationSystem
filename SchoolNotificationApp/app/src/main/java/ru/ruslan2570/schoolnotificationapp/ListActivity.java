@@ -8,7 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Adapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -56,11 +57,31 @@ public class ListActivity extends AppCompatActivity {
 		new Thread(new GetMessage(sessionId)).start();
 	}
 
-	public class GetMessage implements Runnable{
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		switch (id) {
+			case R.id.itm_update:
+					new Thread(new GetMessage(sessionId)).start();
+				return true;
+			case R.id.itm_logout:
+					finish();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public class GetMessage implements Runnable {
 
 		String token;
 
-		GetMessage(String token){
+		GetMessage(String token) {
 			this.token = token;
 		}
 
@@ -70,7 +91,8 @@ public class ListActivity extends AppCompatActivity {
 		ErrorDialog errorDialog;
 		FragmentManager manager = getSupportFragmentManager();
 		ArrayList<JSONObject> messageArray = new ArrayList<>();
-		public void run(){
+
+		public void run() {
 			try {
 				URL url = new URL("http://" + host + "/request?action=getMessages&session_id=" + token);
 				Log.d(TAG, url.toString());
@@ -87,16 +109,21 @@ public class ListActivity extends AppCompatActivity {
 					Log.d(TAG, "creating error");
 					error = new JSONObject(result).getString("error");
 					Log.d(TAG, "error was created");
+					return;
 				}
 
-				if(error != null){
+				if (error != null) {
 					errorDialog = new ErrorDialog(error);
 					errorDialog.show(manager, "errorDialog");
 				}
 
-				for(int i = 0; i < messages.length(); i++){
+				for (int i = 0; i < messages.length(); i++) {
 					messageArray.add(messages.getJSONObject(i));
 				}
+
+				String lastMessageID = messages.getJSONObject(messages.length() - 1).getString("messageId");
+				editor.putString(APP_PREFERENCES_LAST_MESSAGE_ID, lastMessageID);
+				editor.commit();
 
 				MessageAdapter adapter = new MessageAdapter(getApplicationContext(),
 						R.layout.row, R.id.listview, messageArray);
@@ -104,7 +131,6 @@ public class ListActivity extends AppCompatActivity {
 				handler.post(() -> {
 					listView.setAdapter(adapter);
 				});
-
 
 			} catch (IOException | JSONException e) {
 				e.printStackTrace();
