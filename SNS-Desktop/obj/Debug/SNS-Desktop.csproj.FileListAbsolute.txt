@@ -1,0 +1,16 @@
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\bin\Debug\SNS-Desktop.exe.config
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\bin\Debug\SNS-Desktop.exe
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\bin\Debug\SNS-Desktop.pdb
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.csproj.AssemblyReference.cache
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.csproj.SuggestedBindingRedirects.cache
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AuthWindow.g.cs
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\App.g.cs
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop_MarkupCompile.cache
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop_MarkupCompile.lref
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AuthWindow.baml
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.g.resources
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS_Desktop.Properties.Resources.resources
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.csproj.GenerateResource.cache
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.csproj.CoreCompileInputs.cache
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.exe
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\SNS-Desktop.pdb
