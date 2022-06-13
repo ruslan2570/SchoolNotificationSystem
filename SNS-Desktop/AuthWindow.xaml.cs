@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SNS_Desktop.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +31,12 @@ namespace SNS_Desktop
 		string login;
 		string password;
 		
+		enum LoginRole
+		{
+			Admin,
+			User
+		}
+
 		public AuthWindow()
 		{
 			InitializeComponent();
@@ -47,7 +56,7 @@ namespace SNS_Desktop
 			btnLogin.IsEnabled = false;
 			btnAdmin.IsEnabled = false;
 
-			await LoginTask(client, host, login, password, btnLogin, btnAdmin);
+			await LoginTask(client, host, login, password, btnLogin, btnAdmin, LoginRole.User);
 		}
 
 		private async void btnAdmin_Click(object sender, RoutedEventArgs e)
@@ -61,11 +70,11 @@ namespace SNS_Desktop
 			btnLogin.IsEnabled = false;
 			btnAdmin.IsEnabled = false;
 
-			await LoginTask(client, host, login, password, btnLogin, btnAdmin);
+			await LoginTask(client, host, login, password, btnLogin, btnAdmin, LoginRole.Admin);
 		}
 
-		private static async Task LoginTask(HttpClient client, string host, string login, string password, 
-			Button btnL, Button btnAdm)
+		private static async Task LoginTask(HttpClient client, string host, string login, string password,
+			Button btnL, Button btnAdm, LoginRole role)
 		{
 			string stringTask = "";
 			client.DefaultRequestHeaders.Accept.Clear();
@@ -76,7 +85,7 @@ namespace SNS_Desktop
 			{
 				Uri uri = new Uri($"http://{host}/request?action=login&login={login}&password={password}");
 				stringTask = await client.GetStringAsync(uri);
-			} catch(Exception ex)
+			} catch (Exception ex)
 			{
 				MessageBox.Show("Ошибка соединения", "Ошибка");
 			}
@@ -87,7 +96,29 @@ namespace SNS_Desktop
 			}
 
 			MessageBox.Show(stringTask);
+
+			JObject jObject = JObject.Parse(stringTask);
+
+			JToken tokenId = jObject["id"];
+
+			if(tokenId == null)
+			{
+				JToken tokenError = jObject["error"];
+				string errorMsg = tokenError.ToObject<string>();
+				MessageBox.Show(errorMsg, "Ошибка");
+				return;
+			}
+			
+			string sessionId = tokenId.ToObject<string>();
+
+			if(role == LoginRole.Admin)
+			{
+				JToken tokenUser = jObject["user"];
+				User user = tokenUser.ToObject<User>();
+
+			}
 		}
+
 
 		private void SaveAuthData()
 		{
@@ -123,6 +154,5 @@ namespace SNS_Desktop
 			}
 
 		}
-
 	}
 }
