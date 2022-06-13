@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -21,27 +22,38 @@ namespace SNS_Desktop
 	{
 		private readonly HttpClient client = new HttpClient();
 
+		string FILENAME = "authdata.txt";
+
+		string host;
+		string login;
+		string password;
 		
 		public AuthWindow()
 		{
 			InitializeComponent();
-			btnLogin.IsEnabled = false;
+			LoadAuthData();
+			if (!File.Exists(FILENAME))
+				File.Create(FILENAME);
 		}
 
 		private async void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
-			string host = tbHost.Text;
-			string login = tbLogin.Text;
-			string password = pbPass.Password;
+			host = tbHost.Text;
+			login = tbLogin.Text;
+			password = pbPass.Password;
+
+			SaveAuthData();
 
 			await LoginTask(client, host, login, password);
 		}
 
 		private async void btnAdmin_Click(object sender, RoutedEventArgs e)
 		{
-			string host = tbHost.Text;
-			string login = tbLogin.Text;
-			string password = pbPass.Password;
+			host = tbHost.Text;
+			login = tbLogin.Text;
+			password = pbPass.Password;
+
+			SaveAuthData();
 
 			await LoginTask(client, host, login, password);
 		}
@@ -53,20 +65,52 @@ namespace SNS_Desktop
 			new MediaTypeWithQualityHeaderValue("application/json"));
 			client.DefaultRequestHeaders.Add("User-Agent", "SchoolNotificationSystem desktop");
 			Uri uri = new Uri($"http://{host}/request?action=login&login={login}&password={password}");
-			var stringTask = client.GetStringAsync(uri);
+			string stringTask = "";
+			try
+			{
+				stringTask = await client.GetStringAsync(uri);
+			} catch(Exception ex)
+			{
+				MessageBox.Show("Ошибка соединения", "Ошибка");
+			}
 
-			var msg = await stringTask;
-			MessageBox.Show(msg);
+			MessageBox.Show(stringTask);
+		}
+
+		private void SaveAuthData()
+		{
+			string data = $"{host}\n{login}\n{password}";
+
+			StreamWriter sw = new StreamWriter(FILENAME);
+			sw.WriteLineAsync(data);
+			sw.Close();
+		}
+
+		private void LoadAuthData()
+		{
+			if (!File.Exists(FILENAME))
+				return;
+			StreamReader sr = new StreamReader(FILENAME);
+			tbHost.Text = sr.ReadLine();
+			tbLogin.Text = sr.ReadLine();
+			pbPass.Password = sr.ReadLine();
+			sr.Close();
 		}
 
 		public void Typing(object sender, RoutedEventArgs e)
 		{
-			if(String.IsNullOrEmpty(tbHost.Text) || String.IsNullOrEmpty(tbLogin.Text) || String.IsNullOrEmpty(pbPass.Password))
+			if (String.IsNullOrEmpty(tbHost.Text) || String.IsNullOrEmpty(tbLogin.Text) || String.IsNullOrEmpty(pbPass.Password))
+			{
 				btnLogin.IsEnabled = false;
+				btnAdmin.IsEnabled = false;
+			}
 			else
+			{
 				btnLogin.IsEnabled = true;
+				btnAdmin.IsEnabled = true;
+			}
+
 		}
 
-		
 	}
 }

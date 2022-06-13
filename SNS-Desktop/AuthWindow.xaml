@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SNS_Desktop"
         mc:Ignorable="d"
-        Title="Авторизация" Height="350" Width="512">
+        Title="Авторизация" Height="400" Width="512">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -37,8 +37,8 @@
                 <PasswordBox FontSize="16" Name="pbPass" PasswordChanged="Typing"/>
             </StackPanel>
 
-            <Button Name="btnLogin" Content="Войти" FontSize="16" Margin="5" Click="btnLogin_Click"/>
-            <Button Name="btnAdmin" Content="Войти" FontSize="16" Margin="5" Click="btnAdmin_Click"/>
+            <Button Name="btnLogin" Content="Войти" FontSize="16" Margin="5" IsEnabled="False" Click="btnLogin_Click"/>
+            <Button Name="btnAdmin" Content="Администратор" FontSize="16" Margin="5" IsEnabled="False" Click="btnAdmin_Click"/>
             
         </StackPanel>
 
