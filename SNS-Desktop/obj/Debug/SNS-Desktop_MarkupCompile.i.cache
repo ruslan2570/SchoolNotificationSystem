@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\App.xaml
-3-447726296
+5156642428
 
-9-1240293390
+12-395220790
 141496663635
-AdminWindow.xaml;AuthWindow.xaml;UserWindow.xaml;
+AdminPages\MessageManagement.xaml;AdminPages\UserManagement.xaml;AdminWindow.xaml;AuthWindow.xaml;UserWindow.xaml;
 
 True
 

@@ -28,10 +28,19 @@ namespace SNS_Desktop
 			this.host = host;
 		}
 
-
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			new AuthWindow().Show();
+		}
+
+		private void btnMessages_Click(object sender, RoutedEventArgs e)
+		{
+			frmAdmin.Navigate(new AdminPages.MessageManagement(host, sessionId));
+		}
+
+		private void btnUsers_Click(object sender, RoutedEventArgs e)
+		{
+			frmAdmin.Navigate(new AdminPages.UserManagement(host, sessionId));
 		}
 	}
 }

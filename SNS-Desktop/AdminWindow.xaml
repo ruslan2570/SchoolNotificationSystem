@@ -14,8 +14,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Name="btnUsers" Content="Пользователи" FontSize="16" Width="250" Margin="5"/>
-            <Button Name="btnMessages" Content="Сообщения" FontSize="16" Width="250" Margin="5"/>
+            <Button Name="btnUsers" Content="Пользователи" FontSize="16" Width="250" Margin="5" Click="btnUsers_Click"/>
+            <Button Name="btnMessages" Content="Сообщения" FontSize="16" Width="250" Margin="5" Click="btnMessages_Click"/>
         </StackPanel>
+        <Frame Grid.Row="1" Name="frmAdmin" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

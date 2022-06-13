@@ -21,3 +21,7 @@ C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AdminWindow.g.cs
 C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\UserWindow.g.cs
 C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AdminWindow.baml
 C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\UserWindow.baml
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AdminPages\MessageManagement.g.cs
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AdminPages\UserManagement.g.cs
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AdminPages\MessageManagement.baml
+C:\Users\lenovo\SchoolNotificationSystem\SNS-Desktop\obj\Debug\AdminPages\UserManagement.baml
