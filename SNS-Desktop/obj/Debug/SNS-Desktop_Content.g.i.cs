@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("schoolnotificationsystembg.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sns.ico")]
 
 

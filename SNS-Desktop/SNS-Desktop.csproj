@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>SchoolNotificationSystemBG.ico</ApplicationIcon>
+    <ApplicationIcon>SNS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -101,7 +101,7 @@
     <Resource Include="SchoolNotificationSystem.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="SchoolNotificationSystemBG.ico" />
+    <Resource Include="SNS.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

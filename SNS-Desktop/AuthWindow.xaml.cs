@@ -44,7 +44,10 @@ namespace SNS_Desktop
 
 			SaveAuthData();
 
-			await LoginTask(client, host, login, password);
+			btnLogin.IsEnabled = false;
+			btnAdmin.IsEnabled = false;
+
+			await LoginTask(client, host, login, password, btnLogin, btnAdmin);
 		}
 
 		private async void btnAdmin_Click(object sender, RoutedEventArgs e)
@@ -55,23 +58,32 @@ namespace SNS_Desktop
 
 			SaveAuthData();
 
-			await LoginTask(client, host, login, password);
+			btnLogin.IsEnabled = false;
+			btnAdmin.IsEnabled = false;
+
+			await LoginTask(client, host, login, password, btnLogin, btnAdmin);
 		}
 
-		private static async Task LoginTask(HttpClient client, string host, string login, string password)
+		private static async Task LoginTask(HttpClient client, string host, string login, string password, 
+			Button btnL, Button btnAdm)
 		{
+			string stringTask = "";
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(
 			new MediaTypeWithQualityHeaderValue("application/json"));
 			client.DefaultRequestHeaders.Add("User-Agent", "SchoolNotificationSystem desktop");
-			Uri uri = new Uri($"http://{host}/request?action=login&login={login}&password={password}");
-			string stringTask = "";
 			try
 			{
+				Uri uri = new Uri($"http://{host}/request?action=login&login={login}&password={password}");
 				stringTask = await client.GetStringAsync(uri);
 			} catch(Exception ex)
 			{
 				MessageBox.Show("Ошибка соединения", "Ошибка");
+			}
+			finally
+			{
+				btnL.IsEnabled = true;
+				btnAdm.IsEnabled = true;
 			}
 
 			MessageBox.Show(stringTask);
