@@ -56,7 +56,8 @@ namespace SNS_Desktop
 			btnLogin.IsEnabled = false;
 			btnAdmin.IsEnabled = false;
 
-			await LoginTask(client, host, login, password, btnLogin, btnAdmin, LoginRole.User);
+			await LoginTask(client, host, login, password, 
+				btnLogin, btnAdmin, LoginRole.User, this);
 		}
 
 		private async void btnAdmin_Click(object sender, RoutedEventArgs e)
@@ -70,11 +71,12 @@ namespace SNS_Desktop
 			btnLogin.IsEnabled = false;
 			btnAdmin.IsEnabled = false;
 
-			await LoginTask(client, host, login, password, btnLogin, btnAdmin, LoginRole.Admin);
+			await LoginTask(client, host, login, password, 
+				btnLogin, btnAdmin, LoginRole.Admin, this);
 		}
 
 		private static async Task LoginTask(HttpClient client, string host, string login, string password,
-			Button btnL, Button btnAdm, LoginRole role)
+			Button btnL, Button btnAdm, LoginRole role, Window currentWindow)
 		{
 			string stringTask = "";
 			client.DefaultRequestHeaders.Accept.Clear();
@@ -88,6 +90,7 @@ namespace SNS_Desktop
 			} catch (Exception ex)
 			{
 				MessageBox.Show("Ошибка соединения", "Ошибка");
+				return;
 			}
 			finally
 			{
@@ -115,10 +118,26 @@ namespace SNS_Desktop
 			{
 				JToken tokenUser = jObject["user"];
 				User user = tokenUser.ToObject<User>();
+				if (!user.roleName.Equals("Администратор"))
+				{
+					MessageBox.Show("Пользователь не является администратором", "Ошибка");
+					return;
+				}
+			}
 
+			if(role == LoginRole.Admin)
+			{
+				var win = new AdminWindow(sessionId);
+				win.Show();
+				currentWindow.Close();
+			}
+			else if(role == LoginRole.User)
+			{
+				var win = new UserWindow(sessionId);
+				win.Show();
+				currentWindow.Close();
 			}
 		}
-
 
 		private void SaveAuthData()
 		{

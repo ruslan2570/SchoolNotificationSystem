@@ -19,9 +19,18 @@ namespace SNS_Desktop
 	/// </summary>
 	public partial class AdminWindow : Window
 	{
-		public AdminWindow()
+
+		string sessionId;
+		public AdminWindow(String sessionId)
 		{
 			InitializeComponent();
+			this.sessionId = sessionId;
+		}
+
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			new AuthWindow().Show();
 		}
 	}
 }
