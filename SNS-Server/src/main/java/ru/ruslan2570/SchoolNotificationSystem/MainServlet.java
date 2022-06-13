@@ -204,7 +204,7 @@ public class MainServlet extends HttpServlet {
                             break;
                         }
 
-                        if (SessionController.getInstance().getSession(sessionId).user.roleName.equals("Ученик")) {
+                        if (!SessionController.getInstance().getSession(sessionId).user.roleName.equals("Администратор")) {
                             generateError(response, json, "Access denied.");
                             break;
                         }
@@ -278,7 +278,7 @@ public class MainServlet extends HttpServlet {
                         }
 
                         statement = connection.createStatement();
-                        statement.executeUpdate("DELETE FROM `user` WHERE `user`.`user_id` = " + delUserId);
+                        statement.executeUpdate("DELETE FROM `user` WHERE `user`.`user_id` = '" + delUserId + "'");
 
                         jsonObj = new JsonObject();
                         jsonObj.addProperty("success", "User was deleted.");
