@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SNS_Desktop"
         mc:Ignorable="d"
         Title="Авторизация" Height="400" Width="512"
-        ResizeMode="NoResize">
+        ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>

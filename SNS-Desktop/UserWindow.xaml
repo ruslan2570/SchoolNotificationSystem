@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SNS_Desktop"
         mc:Ignorable="d"
         Title="Отправка сообщений" Height="300" Width="500" Closing="Window_Closing"
-        ResizeMode="NoResize">
+        ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
