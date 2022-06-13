@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,17 +9,8 @@ namespace SNS_Desktop.Model
 {
 	internal class User
 	{
-		public string userId;
-		public string username;
-		public string roleName;
-
-		User() { }
-
-		User(string userId, string username, string roleName)
-		{
-			this.userId = userId;
-			this.username = username;
-			this.roleName = roleName;
-		}
+		public string userId { get; set; }
+		public string username { get; set; }
+		public string roleName { get; set; }
 	}
 }

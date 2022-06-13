@@ -73,7 +73,7 @@ namespace SNS_Desktop
 				msg = tokenError.ToObject<string>();
 			}
 
-			MessageBox.Show(msg, "Сообщение");
+			MessageBox.Show(msg, "Ответ");
 			tbMessage.Text = "";
 		}
 

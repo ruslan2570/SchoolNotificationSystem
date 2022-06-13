@@ -1,8 +1,10 @@
-﻿using SNS_Desktop.Model;
+﻿using Newtonsoft.Json.Linq;
+using SNS_Desktop.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,7 +26,7 @@ namespace SNS_Desktop.AdminPages
 	{
 		private readonly HttpClient client = new HttpClient();
 
-		List<Message> list;
+		List<User> list;
 
 		string host;
 		string sessionId;
@@ -34,10 +36,38 @@ namespace SNS_Desktop.AdminPages
 			InitializeComponent();
 			this.host = host;
 			this.sessionId = sessionId;
+			LoadUsers();
 		}
 
-	
+		private async void LoadUsers()
+		{
+			await FillUsersList();
+			lbUsers.ItemsSource = list;
+		}
 
-		
+		private async Task FillUsersList()
+		{
+
+			string result = "";
+			client.DefaultRequestHeaders.Accept.Clear();
+			client.DefaultRequestHeaders.Accept.Add(
+			new MediaTypeWithQualityHeaderValue("application/json"));
+			client.DefaultRequestHeaders.Add("User-Agent", "SchoolNotificationSystem desktop");
+			try
+			{
+				Uri uri = new Uri($"http://{host}/request?action=getUsers&session_id={sessionId}");
+				result = await client.GetStringAsync(uri);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Ошибка соединения", "Ошибка");
+				return;
+			}
+
+			JObject jObject = JObject.Parse(result);
+			JToken tokenMessages = jObject["users"];
+			JArray jarray = tokenMessages.ToObject<JArray>();
+			list = jarray.ToObject<List<User>>();
+		}
 	}
 }

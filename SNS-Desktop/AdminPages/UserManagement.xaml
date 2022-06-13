@@ -18,10 +18,25 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="№ "/>
+                            <TextBlock Text="{Binding userId}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Имя: "/>
+                            <TextBlock Text="{Binding username}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Должность: "/>
+                            <TextBlock Text="{Binding roleName}"/>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <Grid Grid.Column="1">
+            <TextBlock Text="s"/>
+        </Grid>
     </Grid>
 </Page>

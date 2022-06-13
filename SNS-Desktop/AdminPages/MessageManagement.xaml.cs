@@ -73,13 +73,47 @@ namespace SNS_Desktop.AdminPages
 		{
 			Message msg = (Message)lbUsers.SelectedItem;
 			if (msg == null)
+			{
+				MessageBox.Show("Выберите сообщение");
 				return;
+			}
 			MessageBox.Show(msg.text, $"{msg.author} ({msg.role})");
 		}
 
 		private async void btnMsgDel_Click(object sender, RoutedEventArgs e)
 		{
+			Message msg = (Message)lbUsers.SelectedItem;
+			if (msg == null)
+			{
+				MessageBox.Show("Выберите сообщение");
+				return;
+			}
 
+			string result = "";
+			client.DefaultRequestHeaders.Accept.Clear();
+			client.DefaultRequestHeaders.Accept.Add(
+			new MediaTypeWithQualityHeaderValue("application/json"));
+			client.DefaultRequestHeaders.Add("User-Agent", "SchoolNotificationSystem desktop");
+			try
+			{
+				Uri uri = new Uri($"http://{host}/request?action=delMessage&session_id={sessionId}&message_id={msg.messageId}");
+				result = await client.GetStringAsync(uri);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Ошибка соединения", "Ошибка");
+				return;
+			}
+			JObject jObject = JObject.Parse(result);
+			JToken tokenSuccess = jObject["success"];
+			JToken tokenError = jObject["error"];
+			string message = "";
+			if (tokenSuccess != null)
+				message = tokenSuccess.ToObject<string>();
+			else if (tokenError != null)
+				message = tokenError.ToObject<string>();
+			MessageBox.Show(message, "Ответ");
+			LoadMessages();
 		}
 	}
 }
