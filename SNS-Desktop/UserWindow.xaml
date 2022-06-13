@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SNS_Desktop"
         mc:Ignorable="d"
-        Title="UserWindow" Height="450" Width="800" Closing="Window_Closing">
+        Title="Отправка сообщений" Height="300" Width="500" Closing="Window_Closing"
+        ResizeMode="NoResize">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Отправка сообщений" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBox Name="tbMessage" TextWrapping="Wrap" Height="150" Margin="5"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnSend" FontSize="16" Content="Отправить сообщение" Click="btnSend_Click" Margin="5"/>
+                <Button Name="btnClear" FontSize="16" Content="Очистить" Click="btnClear_Click" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

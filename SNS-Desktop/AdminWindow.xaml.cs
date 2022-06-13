@@ -19,12 +19,13 @@ namespace SNS_Desktop
 	/// </summary>
 	public partial class AdminWindow : Window
 	{
-
+		string host;
 		string sessionId;
-		public AdminWindow(String sessionId)
+		public AdminWindow(string host, string sessionId)
 		{
 			InitializeComponent();
 			this.sessionId = sessionId;
+			this.host = host;
 		}
 
 

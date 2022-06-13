@@ -25,7 +25,7 @@ namespace SNS_Desktop
 	{
 		private readonly HttpClient client = new HttpClient();
 
-		string FILENAME = "authdata.txt";
+		string FILENAME = System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\Documents\\SCS_data";
 
 		string host;
 		string login;
@@ -98,8 +98,6 @@ namespace SNS_Desktop
 				btnAdm.IsEnabled = true;
 			}
 
-			MessageBox.Show(stringTask);
-
 			JObject jObject = JObject.Parse(stringTask);
 
 			JToken tokenId = jObject["id"];
@@ -127,13 +125,13 @@ namespace SNS_Desktop
 
 			if(role == LoginRole.Admin)
 			{
-				var win = new AdminWindow(sessionId);
+				var win = new AdminWindow(host, sessionId);
 				win.Show();
 				currentWindow.Close();
 			}
 			else if(role == LoginRole.User)
 			{
-				var win = new UserWindow(sessionId);
+				var win = new UserWindow(host, sessionId);
 				win.Show();
 				currentWindow.Close();
 			}
