@@ -195,6 +195,35 @@ public class MainServlet extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_OK);
                         break;
 
+                    case "delMessage":
+                        String messageId = request.getParameter("message_id");
+
+                        json = new GsonBuilder().setPrettyPrinting().create();
+                        if (sessionId == null || SessionController.getInstance().getSession(sessionId) == null) {
+                            generateError(response, json, "Bad session.");
+                            break;
+                        }
+
+                        if (SessionController.getInstance().getSession(sessionId).user.roleName.equals("Ученик")) {
+                            generateError(response, json, "Access denied.");
+                            break;
+                        }
+
+                        if (messageId == null) {
+                            generateError(response, json, "MessageId is not specified");
+                            break;
+                        }
+
+                        statement = connection.createStatement();
+                        statement.executeUpdate("DELETE FROM `message` WHERE `message_id` = '" + messageId + "'");
+
+                        jsonObj = new JsonObject();
+                        jsonObj.addProperty("success", "The message was deleted.");
+                        response.getWriter().println(json.toJson(jsonObj));
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        break;
+
+
                     case "addUser":
 
                         String addUsername = request.getParameter("username");
@@ -320,5 +349,3 @@ public class MainServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }
-
-
