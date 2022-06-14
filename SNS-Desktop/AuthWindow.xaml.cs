@@ -1,23 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Newtonsoft.Json.Linq;
 using SNS_Desktop.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SNS_Desktop
 {
@@ -25,12 +14,14 @@ namespace SNS_Desktop
 	{
 		private readonly HttpClient client = new HttpClient();
 
+
+		// Путь для сохранения файла с данными авторизации
 		string FILENAME = System.Environment.GetEnvironmentVariable("USERPROFILE") + "\\Documents\\SCS_data";
 
 		string host;
 		string login;
 		string password;
-		
+
 		enum LoginRole
 		{
 			Admin,
@@ -56,7 +47,7 @@ namespace SNS_Desktop
 			btnLogin.IsEnabled = false;
 			btnAdmin.IsEnabled = false;
 
-			await LoginTask(client, host, login, password, 
+			await LoginTask(client, host, login, password,
 				btnLogin, btnAdmin, LoginRole.User, this);
 		}
 
@@ -71,10 +62,14 @@ namespace SNS_Desktop
 			btnLogin.IsEnabled = false;
 			btnAdmin.IsEnabled = false;
 
-			await LoginTask(client, host, login, password, 
+			await LoginTask(client, host, login, password,
 				btnLogin, btnAdmin, LoginRole.Admin, this);
 		}
 
+		/* Ассинхронный метод для авторизации
+		* Получает из запроса id сессии
+		* Или ошибку
+		*/
 		private static async Task LoginTask(HttpClient client, string host, string login, string password,
 			Button btnL, Button btnAdm, LoginRole role, Window currentWindow)
 		{
@@ -87,7 +82,8 @@ namespace SNS_Desktop
 			{
 				Uri uri = new Uri($"http://{host}/request?action=login&login={login}&password={password}");
 				stringTask = await client.GetStringAsync(uri);
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				MessageBox.Show("Ошибка соединения", "Ошибка");
 				return;
@@ -102,17 +98,17 @@ namespace SNS_Desktop
 
 			JToken tokenId = jObject["id"];
 
-			if(tokenId == null)
+			if (tokenId == null)
 			{
 				JToken tokenError = jObject["error"];
 				string errorMsg = tokenError.ToObject<string>();
 				MessageBox.Show(errorMsg, "Ошибка");
 				return;
 			}
-			
+
 			string sessionId = tokenId.ToObject<string>();
 
-			if(role == LoginRole.Admin)
+			if (role == LoginRole.Admin)
 			{
 				JToken tokenUser = jObject["user"];
 				User user = tokenUser.ToObject<User>();
@@ -123,13 +119,13 @@ namespace SNS_Desktop
 				}
 			}
 
-			if(role == LoginRole.Admin)
+			if (role == LoginRole.Admin)
 			{
 				var win = new AdminWindow(host, sessionId);
 				win.Show();
 				currentWindow.Close();
 			}
-			else if(role == LoginRole.User)
+			else if (role == LoginRole.User)
 			{
 				var win = new UserWindow(host, sessionId);
 				win.Show();
