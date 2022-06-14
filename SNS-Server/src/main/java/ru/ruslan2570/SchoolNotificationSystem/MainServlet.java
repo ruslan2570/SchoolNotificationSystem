@@ -27,15 +27,21 @@ public class MainServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
+        // Консольный вывод запроса
+        System.out.println(request.getRequestURI() + request.getParameterMap());
+
+
         String act = request.getParameter("action");
         JsonObject jsonObj;
 
         Connection connection = null;
         try {
 
+            // Создание поключения к БД
             connection = DriverManager.
                     getConnection(url, user, password);
 
+            // Если action не задан
             if (act == null) {
 
                 response.setContentType("text/html;charset=utf-8");
@@ -342,6 +348,7 @@ public class MainServlet extends HttpServlet {
 
     }
 
+    // Метод генерации ошибок
     private void generateError(HttpServletResponse response, Gson json, String error) throws Exception {
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("error", error);
