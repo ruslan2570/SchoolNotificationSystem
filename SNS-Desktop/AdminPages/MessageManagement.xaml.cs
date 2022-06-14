@@ -42,7 +42,7 @@ namespace SNS_Desktop.AdminPages
 		private async void LoadMessages()
 		{
 			await FillMessagesList();
-			lbUsers.ItemsSource = list;
+			lbMessages.ItemsSource = list;
 		}
 
 		private async Task FillMessagesList()
@@ -71,7 +71,7 @@ namespace SNS_Desktop.AdminPages
 
 		private void btnMsgShow_Click(object sender, RoutedEventArgs e)
 		{
-			Message msg = (Message)lbUsers.SelectedItem;
+			Message msg = (Message)lbMessages.SelectedItem;
 			if (msg == null)
 			{
 				MessageBox.Show("Выберите сообщение");
@@ -82,7 +82,7 @@ namespace SNS_Desktop.AdminPages
 
 		private async void btnMsgDel_Click(object sender, RoutedEventArgs e)
 		{
-			Message msg = (Message)lbUsers.SelectedItem;
+			Message msg = (Message)lbMessages.SelectedItem;
 			if (msg == null)
 			{
 				MessageBox.Show("Выберите сообщение");

@@ -1,42 +1,62 @@
 ﻿<Page x:Class="SNS_Desktop.AdminPages.UserManagement"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SNS_Desktop.AdminPages"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="800"
-      Title="Управление пользователями">
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	  xmlns:local="clr-namespace:SNS_Desktop.AdminPages"
+	  mc:Ignorable="d" 
+	  d:DesignHeight="300" d:DesignWidth="800"
+	  Title="Управление пользователями">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
 
-        <ListBox x:Name="lbUsers" Margin="5">
+        <ListBox x:Name="lbUsers" Margin="5" SelectionChanged="lbUsers_SelectionChanged">
             <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="№ "/>
-                            <TextBlock Text="{Binding userId}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Имя: "/>
-                            <TextBlock Text="{Binding username}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Должность: "/>
-                            <TextBlock Text="{Binding roleName}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+				<DataTemplate>
+					<StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="№ "/>
+							<TextBlock Text="{Binding userId}"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Имя: "/>
+							<TextBlock Text="{Binding username}"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Должность: "/>
+							<TextBlock Text="{Binding roleName}"/>
+						</StackPanel>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 
-        <Grid Grid.Column="1">
-            <TextBlock Text="s"/>
-        </Grid>
-    </Grid>
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+				<StackPanel>
+					<TextBlock Text="Логин:" FontSize="16" Margin="5"/>
+					<TextBlock Text="Пароль:" FontSize="16" Margin="5"/>
+					<TextBlock Text="Роль:" FontSize="16" Margin="5"/>
+				</StackPanel>
+				<StackPanel Orientation="Vertical">
+					<TextBox x:Name="tbLogin" FontSize="16" Width="100" Margin="5" TextChanged="Typing"/>
+                    <PasswordBox x:Name="pbPassword" FontSize="16" Width="100" Margin="5" PasswordChanged="Typing"/>
+					<ComboBox x:Name="cbRole" FontSize="16" Width="100" Margin="5" SelectionChanged="Typing" DisplayMemberPath="roleName"/>
+				</StackPanel>
+			</StackPanel>
+			<StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
+				<Button x:Name="btnAdd" Content="Добавить" Margin="5" FontSize="16" Click="btnAdd_Click" IsEnabled="False"/>
+				<Button x:Name="btnDel" Content="Удалить" Margin="5" FontSize="16" Click="btnDel_Click" IsEnabled="False"/>
+			</StackPanel>
+		</Grid>
+	</Grid>
 </Page>
