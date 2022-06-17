@@ -64,8 +64,15 @@ namespace SNS_Desktop.AdminPages
 			}
 
 			JObject jObject = JObject.Parse(result);
-			JToken tokenMessages = jObject["users"];
-			JArray jarray = tokenMessages.ToObject<JArray>();
+			JToken tokenUsers = jObject["users"];
+			if(tokenUsers == null)
+			{
+				JToken tokenError = jObject["error"];
+				string errorMsg = tokenError.ToObject<string>();
+				MessageBox.Show(errorMsg, "Ошибка");
+				return;
+			}
+			JArray jarray = tokenUsers.ToObject<JArray>();
 			usersList = jarray.ToObject<List<User>>();
 		}
 
@@ -88,8 +95,15 @@ namespace SNS_Desktop.AdminPages
 			}
 
 			JObject jObject = JObject.Parse(result);
-			JToken tokenMessages = jObject["roles"];
-			JArray jarray = tokenMessages.ToObject<JArray>();
+			JToken tokenRoles = jObject["roles"];
+			if(tokenRoles == null)
+			{
+				JToken tokenError = jObject["error"];
+				string errorMsg = tokenError.ToObject<string>();
+				MessageBox.Show(errorMsg, "Ошибка");
+				return;
+			}
+			JArray jarray = tokenRoles.ToObject<JArray>();
 			rolesList = jarray.ToObject<List<Role>>();
 		}
 

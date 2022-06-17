@@ -56,6 +56,13 @@ namespace SNS_Desktop.AdminPages
 
 			JObject jObject = JObject.Parse(result);
 			JToken tokenMessages = jObject["messages"];
+			if(tokenMessages == null)
+			{
+				JToken tokenError = jObject["error"];
+				string errorMsg = tokenError.ToObject<string>();
+				MessageBox.Show(errorMsg, "Ошибка");
+				return;
+			}
 			JArray jarray = tokenMessages.ToObject<JArray>();
 			list = jarray.ToObject<List<Message>>();
 		}
