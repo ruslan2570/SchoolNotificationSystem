@@ -45,7 +45,6 @@ public class SessionController {
     // Получение экземпляра сессии по экземляру пользователя
     public Session getSession(User user){
         for(Map.Entry<String, Session> entry: sessionMap.entrySet()){
-            String key = entry.getKey();
             Session session = entry.getValue();
             if(user.userId == session.user.userId){
                 session.remainingTime+= 1;
@@ -58,7 +57,6 @@ public class SessionController {
     // Получении экземпляра сессии по id сессии
     public Session getSession(String sessionId){
         for(Map.Entry<String, Session> entry: sessionMap.entrySet()){
-            String key = entry.getKey();
             Session session = entry.getValue();
             if(session.id.equals(sessionId)){
                 session.remainingTime+= 1;
@@ -118,7 +116,6 @@ public class SessionController {
 
     public void printSessions(){
         for(Map.Entry<String, Session> entry: sessionMap.entrySet()){
-            String key = entry.getKey();
             Session session = entry.getValue();
             String out = "";
             out += session.user.toString() + "\nid: " + session.id + "\nremaining time: " + session.remainingTime;
