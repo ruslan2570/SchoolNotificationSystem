@@ -324,11 +324,9 @@ public class MainServlet extends HttpServlet {
                             generateError(response, json, "Password is not valid.");
                             break;
                         }
+
+                        SessionController.getInstance().addSession(user);
                         Session session = SessionController.getInstance().getSession(user);
-                        if (session == null) {
-                            SessionController.getInstance().addSession(user);
-                            session = SessionController.getInstance().getSession(user);
-                        }
 
                         response.getWriter().println(json.toJson(session));
 

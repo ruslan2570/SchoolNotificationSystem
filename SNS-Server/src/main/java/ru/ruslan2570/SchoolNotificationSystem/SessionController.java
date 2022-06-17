@@ -35,7 +35,7 @@ public class SessionController {
             String key = entry.getKey();
             Session session = entry.getValue();
             if(user.userId == session.user.userId){
-                session.remainingTime+= 5;
+                session.remainingTime+= 1;
                 return key;
             }
         }
@@ -48,7 +48,7 @@ public class SessionController {
             String key = entry.getKey();
             Session session = entry.getValue();
             if(user.userId == session.user.userId){
-                session.remainingTime+= 5;
+                session.remainingTime+= 1;
                 return session;
             }
         }
@@ -61,7 +61,7 @@ public class SessionController {
             String key = entry.getKey();
             Session session = entry.getValue();
             if(session.id.equals(sessionId)){
-                session.remainingTime+= 5;
+                session.remainingTime+= 1;
                 return session;
             }
         }
@@ -100,7 +100,13 @@ public class SessionController {
     public void addSession(User user){
         if(getSessionId(user) == null){
             String id = generateId();
-            Session session = new Session(id, user, 10);
+            Session session = new Session(id, user, 5);
+            sessionMap.put(id, session);
+        } else{
+            String exSessionId = getSessionId(user);
+            sessionMap.remove(exSessionId);
+            String id = generateId();
+            Session session = new Session(id, user, 5);
             sessionMap.put(id, session);
         }
     }
@@ -108,5 +114,15 @@ public class SessionController {
     // Метод генерации id сессии
     private static String generateId(){
         return HashUtils.getHash(sessionController.sessionMap.toString() + new Random().nextInt());
+    }
+
+    public void printSessions(){
+        for(Map.Entry<String, Session> entry: sessionMap.entrySet()){
+            String key = entry.getKey();
+            Session session = entry.getValue();
+            String out = "";
+            out += session.user.toString() + "\nid: " + session.id + "\nremaining time: " + session.remainingTime;
+            System.out.println(out);
+        }
     }
 }

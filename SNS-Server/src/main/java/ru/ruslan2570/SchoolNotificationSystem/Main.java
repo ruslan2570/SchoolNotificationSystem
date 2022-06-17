@@ -26,6 +26,7 @@ public class Main {
                     while(true) {
                         SessionController.getInstance().deleteExpiredSessions();
                         SessionController.getInstance().subOneMinute();
+                        SessionController.getInstance().printSessions();
                         Thread.sleep(60000);
                     }
                 } catch (InterruptedException e) {
